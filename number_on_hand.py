@@ -2,15 +2,14 @@ import cv2
 import mediapipe as mp
 
 
-def dist(a,b):
-    ans = ( (b.x**2-a.x**2)**2 + (b.y**2-a.y**2)**2 + (b.z**2-a.z**2)**2 )**0.5
-    print(ans)
+
+
 mp_draw = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 
 cap = cv2.VideoCapture(0)
 
-with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) as hands:
+with mp_hands.Hands(min_detection_confidence=0.65, min_tracking_confidence=0.65) as hands:
 
     while cap.isOpened():
         success, image = cap.read()
@@ -28,12 +27,29 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) a
                 mp_draw.draw_landmarks(img, hand_landmarks, mp_hands.HAND_CONNECTIONS
                 ,mp_draw.DrawingSpec(color=(0,215,255),thickness=4, circle_radius=4)
                 ,mp_draw.DrawingSpec(color=(0,0,255),thickness = 8, circle_radius=2))
-                index_tip = hand_landmarks.landmark[8]
-                thumb_tip = hand_landmarks.landmark[4]
-                # dist(index_tip,thumb_tip)
+            count = 0    
+            for index in [8,12,16,20]:
+                d1 = hand_landmarks.landmark[index].y - hand_landmarks.landmark[0].y
+                d2 = hand_landmarks.landmark[index-3].y - hand_landmarks.landmark[0].y
+                if d1<d2 :
+                    count+=1
+            d1 = hand_landmarks.landmark[4].x - hand_landmarks.landmark[0].x
+            d2 = hand_landmarks.landmark[3].x - hand_landmarks.landmark[0].x
+            # print(result.multi_handedness)
+           
+            if d2<0:
+                if(d1<d2):
+                    count+=1
+            else:
+                if(d1>d2):
+                    count+=1
+            
+            print(count)
+        else:
+            print(0)
 
         # img = cv2.resize(img , (1000,700))
-        cv2.imshow("Hand Detector", img)
+        cv2.imshow("Hand Number Detector", img)
 
         if cv2.waitKey(5) & 0xFF == 27:
             break
