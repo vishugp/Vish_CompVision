@@ -1,0 +1,1 @@
+Using the MediaPipe & cv2 Library, Capturing the Hand Landmarks for Gesture Estimation
