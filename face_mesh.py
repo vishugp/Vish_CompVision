@@ -35,7 +35,7 @@ with mp_face_mesh.FaceMesh(
             connections=mp_face_mesh.FACE_CONNECTIONS,
             # landmark_drawing_spec=drawing_spec,
             # connection_drawing_spec=drawing_spec,
-            landmark_drawing_spec = mp_drawing.DrawingSpec(color=(0,215,255),thickness = 2, circle_radius=2),
+            landmark_drawing_spec = mp_drawing.DrawingSpec(color=(0,215,255),thickness = 1, circle_radius=2),
             connection_drawing_spec = mp_drawing.DrawingSpec(color=(0,0,255),thickness = 2, circle_radius=2))
     cv2.imshow('MediaPipe FaceMesh', image)
     if cv2.waitKey(5) & 0xFF == 27:

@@ -1,15 +1,17 @@
+### IMPORTING CV LIBRARIES
 import cv2
 import mediapipe as mp
+
+### FACE DETECTION LIBRARY FUNCTIONS
 mp_face_detection = mp.solutions.face_detection
 mp_drawing = mp.solutions.drawing_utils
 
 cap = cv2.VideoCapture(0)
-with mp_face_detection.FaceDetection(
-    min_detection_confidence=0.5) as face_detection:
+with mp_face_detection.FaceDetection(min_detection_confidence=0.5) as face_detection:
   while cap.isOpened():
     success, image = cap.read()
     if not success:
-      print("Ignoring empty camera frame.")
+      print("Camera not opening, try changining the devie option in cv2.VideoCapture.")
       # If loading a video, use 'break' instead of 'continue'.
       continue
 
@@ -27,6 +29,8 @@ with mp_face_detection.FaceDetection(
     if results.detections:
       for detection in results.detections:
         mp_drawing.draw_detection(image, detection)
+
+        
     cv2.imshow('MediaPipe Face Detection', image)
     if cv2.waitKey(5) & 0xFF == 27:
       break
