@@ -1,2 +1,2 @@
 # ComputerVision
-Repository of Computer Vision Projects
+Repository of Computer Vision Mini Projects
