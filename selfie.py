@@ -7,12 +7,12 @@ mp_selfie_segmentation = mp.solutions.selfie_segmentation
 # For static images:
 IMAGE_FILES = []
 BG_COLOR = (192, 192, 192) # gray
-MASK_COLOR = (255, 255, 255) # white
-with mp_selfie_segmentation.SelfieSegmentation(
-    model_selection=0) as selfie_segmentation:
+MASK_COLOR = (255,99,71) # white
+with mp_selfie_segmentation.SelfieSegmentation(model_selection=0) as selfie_segmentation:
   for idx, file in enumerate(IMAGE_FILES):
     image = cv2.imread(file)
     image_height, image_width, _ = image.shape
+
     # Convert the BGR image to RGB before processing.
     results = selfie_segmentation.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
@@ -20,6 +20,7 @@ with mp_selfie_segmentation.SelfieSegmentation(
     # To improve segmentation around boundaries, consider applying a joint
     # bilateral filter to "results.segmentation_mask" with "image".
     condition = np.stack((results.segmentation_mask,) * 3, axis=-1) > 0.1
+
     # Generate solid color images for showing the output selfie segmentation mask.
     fg_image = np.zeros(image.shape, dtype=np.uint8)
     fg_image[:] = MASK_COLOR
@@ -29,7 +30,7 @@ with mp_selfie_segmentation.SelfieSegmentation(
     cv2.imwrite('/tmp/selfie_segmentation_output' + str(idx) + '.png', output_image)
 
 # For webcam input:
-BG_COLOR = (192, 192, 192) # gray
+BG_COLOR = MASK_COLOR # gray
 cap = cv2.VideoCapture(0)
 with mp_selfie_segmentation.SelfieSegmentation(
     model_selection=1) as selfie_segmentation:
